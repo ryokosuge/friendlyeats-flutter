@@ -1,34 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+import 'src/app.dart' deferred as App;
+
+void main() async {
+  // Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(App());
-}
+  await Firebase.initializeApp();
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initialization,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Text("Hello flutter firebase");
-        }
-
-        return Text("Loading...");
-      },
-    );
-  }
+  final Future<void>? loadedLibrary = await App.loadLibrary();
+  runApp(FutureBuilder(
+    future: loadedLibrary,
+    builder: (snapshot, context) => App.FriendlyEatsApp(),
+  ));
 }
