@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "239232101711",
+    "project_id": "friendlyeats-flutter-3ad91",
+    "storage_bucket": "friendlyeats-flutter-3ad91.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239232101711:android:294cde2d03060f94e2a93a",
+        "android_client_info": {
+          "package_name": "com.ryokosuge.friendlyeats_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239232101711-498mp6966cukglqkj0p63hj3j3rr7kfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVExr04gOs3RY-HvUqvB_86STYaAhCblg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239232101711-498mp6966cukglqkj0p63hj3j3rr7kfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
