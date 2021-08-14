@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:friendlyeats_flutter/src/model/filter.dart';
+import 'package:friendlyeats_flutter/src/widget/empty_list.dart';
 import 'package:friendlyeats_flutter/src/widget/filter_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   Filter? _filter;
 
   Future<void> _onFilterBarPressed() async {}
+  Future<void> _onAddRandomRestaurantsPressed() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,14 @@ class _HomePageState extends State<HomePage> {
               filter: _filter,
             ),
           ),
+        ),
+      ),
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 1280),
+          child: EmptyListView(
+              child: Text("FriendlyEats has no restaurants yet!"),
+              onPress: _onAddRandomRestaurantsPressed),
         ),
       ),
     );
