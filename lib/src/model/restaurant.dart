@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import './values.dart';
 
 typedef RestaurantPressedCallback = void Function(String restaurantId);
@@ -14,6 +16,7 @@ class Restaurant {
   final int numRatings;
   final int price;
   final String photo;
+  final DocumentReference? reference;
 
   Restaurant._(
       {required this.name,
@@ -23,7 +26,19 @@ class Restaurant {
       required this.photo})
       : id = null,
         numRatings = 0,
-        avgRating = 0;
+        avgRating = 0,
+        reference = null;
+
+  Restaurant.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : id = snapshot.id,
+        name = snapshot.data()?["name"],
+        category = snapshot.data()?["category"],
+        city = snapshot.data()?["city"],
+        avgRating = (snapshot.data()?["avgRating"] as int).toDouble(),
+        numRatings = snapshot.data()?["numRatings"],
+        price = snapshot.data()?["price"],
+        photo = snapshot.data()?["photo"],
+        reference = snapshot.reference;
 
   factory Restaurant.random() {
     return Restaurant._(
