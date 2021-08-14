@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isLoading = true;
   Filter? _filter;
 
   Future<void> _onFilterBarPressed() async {}
@@ -36,9 +37,11 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Container(
           constraints: BoxConstraints(maxWidth: 1280),
-          child: EmptyListView(
-              child: Text("FriendlyEats has no restaurants yet!"),
-              onPress: _onAddRandomRestaurantsPressed),
+          child: _isLoading
+              ? CircularProgressIndicator()
+              : EmptyListView(
+                  child: Text("FriendlyEats has no restaurants yet!"),
+                  onPress: _onAddRandomRestaurantsPressed),
         ),
       ),
     );
