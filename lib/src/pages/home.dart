@@ -1,7 +1,14 @@
+import 'dart:async';
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:friendlyeats_flutter/src/model/data.dart' as data;
 import 'package:friendlyeats_flutter/src/model/filter.dart';
+import 'package:friendlyeats_flutter/src/model/restaurant.dart';
 import 'package:friendlyeats_flutter/src/widget/empty_list.dart';
 import 'package:friendlyeats_flutter/src/widget/filter_bar.dart';
+import 'package:friendlyeats_flutter/src/widget/restaurant_grid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,11 +18,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  StreamSubscription<QuerySnapshot>? _currentSubscription;
   bool _isLoading = true;
+  List<Restaurant> _restaurants = <Restaurant>[];
   Filter? _filter;
 
   Future<void> _onFilterBarPressed() async {}
-  Future<void> _onAddRandomRestaurantsPressed() async {}
+  Future<void> _onAddRandomRestaurantsPressed() async {
+    final numReviews = Random().nextInt(10) + 20;
+    final restaurants =
+        List.generate(numReviews, (index) => Restaurant.random());
+    data.addRestaurantsBatch(restaurants);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +53,16 @@ class _HomePageState extends State<HomePage> {
           constraints: BoxConstraints(maxWidth: 1280),
           child: _isLoading
               ? CircularProgressIndicator()
-              : EmptyListView(
-                  child: Text("FriendlyEats has no restaurants yet!"),
-                  onPress: _onAddRandomRestaurantsPressed),
+              : _restaurants.isNotEmpty
+                  ? RestaurantGrid(
+                      onRestaurantPressed: (id) {
+                        // TODO: Add deep links on web
+                        Navigator.pushNamed(context, "");
+                      },
+                      restaurants: _restaurants)
+                  : EmptyListView(
+                      child: Text("FriendlyEats has no restaurants yet!"),
+                      onPress: _onAddRandomRestaurantsPressed),
         ),
       ),
     );
