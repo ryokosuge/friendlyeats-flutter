@@ -4,8 +4,16 @@ import 'package:friendlyeats_flutter/src/model/restaurant.dart';
 import 'package:friendlyeats_flutter/src/model/review.dart';
 
 Future<void> addRestaurant(Restaurant restaurant) {
-  // TODO: Complate the "Add restaurants to Firestore" step.
-  return Future.value();
+  final restaurants = FirebaseFirestore.instance.collection("restaurants");
+  return restaurants.add({
+    'avgRating': restaurant.avgRating,
+    'category': restaurant.category,
+    'city': restaurant.city,
+    'name': restaurant.name,
+    'numRatings': restaurant.numRatings,
+    'photo': restaurant.photo,
+    'price': restaurant.price,
+  })
 }
 
 Stream<QuerySnapshot?> loadAllRestaurants() {
