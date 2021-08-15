@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pages/home.dart';
+import 'package:friendlyeats_flutter/src/pages/restaurant_page.dart';
+import 'pages/home_page.dart';
 
 class FriendlyEatsApp extends StatelessWidget {
   @override
@@ -8,8 +9,17 @@ class FriendlyEatsApp extends StatelessWidget {
       title: "FriendlyEats",
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case RestaurantPage.route:
+            final RestaurantPageArguments arguments =
+                settings.arguments as RestaurantPageArguments;
+            return MaterialPageRoute(
+                builder: (context) => RestaurantPage(
+                      restaurantId: arguments.id,
+                    ));
           default:
-            return MaterialPageRoute(builder: (context) => HomePage());
+            return MaterialPageRoute(
+              builder: (context) => HomePage(),
+            );
         }
       },
     );

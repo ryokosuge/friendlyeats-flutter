@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:friendlyeats_flutter/src/model/data.dart' as data;
 import 'package:friendlyeats_flutter/src/model/filter.dart';
 import 'package:friendlyeats_flutter/src/model/restaurant.dart';
+import 'package:friendlyeats_flutter/src/pages/restaurant_page.dart';
 import 'package:friendlyeats_flutter/src/widget/dialogs/filter_select_dialog.dart';
 import 'package:friendlyeats_flutter/src/widget/empty_list.dart';
 import 'package:friendlyeats_flutter/src/widget/filter_bar.dart';
@@ -100,8 +101,8 @@ class _HomePageState extends State<HomePage> {
               : _restaurants.isNotEmpty
                   ? RestaurantGrid(
                       onRestaurantPressed: (id) {
-                        // TODO: Add deep links on web
-                        Navigator.pushNamed(context, "");
+                        Navigator.pushNamed(context, RestaurantPage.route,
+                            arguments: RestaurantPageArguments(id: id));
                       },
                       restaurants: _restaurants)
                   : EmptyListView(
