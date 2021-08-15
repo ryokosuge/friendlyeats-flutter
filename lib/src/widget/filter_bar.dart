@@ -4,8 +4,10 @@ import '../model/filter.dart';
 const _boldStyle = TextStyle(fontWeight: FontWeight.bold);
 
 class FilterBar extends StatelessWidget {
-  FilterBar({required VoidCallback onPressed, Filter? filter})
-      : _onPressed = onPressed,
+  FilterBar({
+    Filter? filter,
+    required VoidCallback onPressed,
+  })  : _onPressed = onPressed,
         _filter = filter;
 
   final VoidCallback _onPressed;

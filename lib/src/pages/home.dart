@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:friendlyeats_flutter/src/model/data.dart' as data;
 import 'package:friendlyeats_flutter/src/model/filter.dart';
 import 'package:friendlyeats_flutter/src/model/restaurant.dart';
+import 'package:friendlyeats_flutter/src/widget/dialogs/filter_select_dialog.dart';
 import 'package:friendlyeats_flutter/src/widget/empty_list.dart';
 import 'package:friendlyeats_flutter/src/widget/filter_bar.dart';
 import 'package:friendlyeats_flutter/src/widget/restaurant_grid.dart';
@@ -44,7 +45,26 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _onFilterBarPressed() async {}
+  Future<void> _onFilterBarPressed() async {
+    final filter = await showDialog<Filter>(
+        context: context, builder: (_) => FilterSelectDialog(filter: _filter));
+    if (filter == null) {
+      return;
+    }
+
+    await _currentSubscription?.cancel();
+    setState(() {
+      _isLoading = true;
+      _filter = filter;
+      if (filter.isDefault) {
+        _currentSubscription =
+            data.loadAllRestaurants().listen(_updateRestaurants);
+      } else {
+        _currentSubscription =
+            data.loadFilteredRestaurants(filter).listen(_updateRestaurants);
+      }
+    });
+  }
 
   Future<void> _onAddRandomRestaurantsPressed() async {
     final numReviews = Random().nextInt(10) + 20;

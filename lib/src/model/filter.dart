@@ -1,4 +1,4 @@
-typedef FilterChangedCallback<T> = void Function(T newValue);
+typedef FilterChangedCallback<T> = void Function(T? newValue);
 
 class Filter {
   final String? city;
@@ -10,5 +10,10 @@ class Filter {
     return (city == null && price == null && category == null && sort == null);
   }
 
-  Filter({this.city, this.price, this.category, this.sort});
+  Filter({
+    this.city,
+    this.price,
+    this.category,
+    this.sort,
+  });
 }
