@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:friendlyeats_flutter/src/model/data.dart' as data;
 import 'package:friendlyeats_flutter/src/model/filter.dart';
@@ -11,6 +12,8 @@ import 'package:friendlyeats_flutter/src/widget/filter_bar.dart';
 import 'package:friendlyeats_flutter/src/widget/restaurant_grid.dart';
 
 class HomePage extends StatefulWidget {
+  static const route = '/';
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -18,12 +21,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  StreamSubscription<QuerySnapshot>? _currentSubscription;
+  _HomePageState() {
+    FirebaseAuth.instance.signInAnonymously().then(
+        (UserCredential credential) => {
+              _currentSubscription =
+                  data.loadAllRestaurants().listen(_updateRestaurants)
+            });
+  }
+
+  StreamSubscription<QuerySnapshot?>? _currentSubscription;
   bool _isLoading = true;
   List<Restaurant> _restaurants = <Restaurant>[];
   Filter? _filter;
 
+  void _updateRestaurants(QuerySnapshot? snapshot) {
+    if (snapshot == null) {
+      return;
+    }
+    setState(() {
+      _isLoading = false;
+      _restaurants = data.getRestaurantsFromQuery(snapshot);
+    });
+  }
+
   Future<void> _onFilterBarPressed() async {}
+
   Future<void> _onAddRandomRestaurantsPressed() async {
     final numReviews = Random().nextInt(10) + 20;
     final restaurants =

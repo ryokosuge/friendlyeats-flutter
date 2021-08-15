@@ -36,5 +36,5 @@ Stream<QuerySnapshot?> loadFilteredRestaurants(Filter filter) {
 void addRestaurantsBatch(List<Restaurant> restaurants) {
   restaurants.forEach((Restaurant restaurant) {
     addRestaurant(restaurant);
-  })
+  });
 }
