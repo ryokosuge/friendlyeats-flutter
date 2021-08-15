@@ -23,19 +23,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   _HomePageState() {
-    FirebaseAuth.instance.signInAnonymously().then(
-        (UserCredential credential) => {
-              _currentSubscription =
-                  data.loadAllRestaurants().listen(_updateRestaurants)
-            });
+    FirebaseAuth.instance.signInAnonymously().then((UserCredential credential) {
+      _currentSubscription =
+          data.loadAllRestaurants().listen(_updateRestaurants);
+    }).catchError((Object error) {
+      print(error);
+    });
   }
 
-  StreamSubscription<QuerySnapshot?>? _currentSubscription;
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>?>?
+      _currentSubscription;
   bool _isLoading = true;
   List<Restaurant> _restaurants = <Restaurant>[];
   Filter? _filter;
 
-  void _updateRestaurants(QuerySnapshot? snapshot) {
+  void _updateRestaurants(QuerySnapshot<Map<String, dynamic>>? snapshot) {
     if (snapshot == null) {
       return;
     }

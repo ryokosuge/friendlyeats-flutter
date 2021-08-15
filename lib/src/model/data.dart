@@ -13,17 +13,23 @@ Future<void> addRestaurant(Restaurant restaurant) {
     'numRatings': restaurant.numRatings,
     'photo': restaurant.photo,
     'price': restaurant.price,
-  })
+  });
 }
 
-Stream<QuerySnapshot?> loadAllRestaurants() {
-  // TODO: Complete the "Display data from Cloud Firestore" step.
-  return Stream<QuerySnapshot?>.value(null);
+Stream<QuerySnapshot<Map<String, dynamic>>> loadAllRestaurants() {
+  return FirebaseFirestore.instance
+      .collection('restaurants')
+      .orderBy('avgRating', descending: true)
+      .limit(50)
+      .snapshots();
 }
 
-List<Restaurant> getRestaurantsFromQuery(QuerySnapshot snapshot) {
-  // TODO: Complete the "Display data from Cloud Firestore" step.
-  return [];
+List<Restaurant> getRestaurantsFromQuery(
+    QuerySnapshot<Map<String, dynamic>> snapshot) {
+  return snapshot.docs
+      .map((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+    return Restaurant.fromSnapshot(documentSnapshot);
+  }).toList();
 }
 
 Future<Restaurant?> getRestaurant(String restaurantId) {
@@ -36,9 +42,10 @@ Future<void> addReview({required String restaurantId, required Review review}) {
   return Future.value();
 }
 
-Stream<QuerySnapshot?> loadFilteredRestaurants(Filter filter) {
+Stream<QuerySnapshot<Map<String, dynamic>>?> loadFilteredRestaurants(
+    Filter filter) {
   // TODO: Complete the "Sorting and filtering data" step.
-  return Stream<QuerySnapshot?>.value(null);
+  return Stream<QuerySnapshot<Map<String, dynamic>>?>.value(null);
 }
 
 void addRestaurantsBatch(List<Restaurant> restaurants) {
