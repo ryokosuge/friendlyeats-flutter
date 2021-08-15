@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:friendlyeats_flutter/src/model/restaurant.dart';
 import 'package:friendlyeats_flutter/src/model/data.dart' as data;
 import 'package:friendlyeats_flutter/src/widget/empty_list.dart';
+import 'package:friendlyeats_flutter/src/widget/restaurant_app_bar.dart';
 import 'package:sliver_fab/sliver_fab.dart';
 
 class RestaurantPage extends StatefulWidget {
@@ -29,6 +30,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
     FirebaseAuth.instance.signInAnonymously().then((UserCredential credential) {
       data.getRestaurant(restaurantId).then((Restaurant? restaurant) {
         setState(() {
+          _isLoading = false;
           _restaurant = restaurant;
         });
       });
@@ -45,6 +47,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
             body: Builder(
               builder: (context) => SliverFab(
                 slivers: <Widget>[
+                  RestaurantAppBar(
+                      restaurant: _restaurant,
+                      onPressed: () => Navigator.pop(context)),
                   SliverFillRemaining(
                     hasScrollBody: false,
                     child: EmptyListView(
